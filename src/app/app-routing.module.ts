@@ -9,7 +9,15 @@ const routes: Routes = [
     component: ListUserComponent
   },
   {
-    path: "detail",
+    path: "create",
+    component: DetailUserComponent
+  },
+  {
+    path: "detail/:id",
+    component: DetailUserComponent
+  },
+  {
+    path: "edit/:id",
     component: DetailUserComponent
   },
   {

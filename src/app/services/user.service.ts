@@ -27,5 +27,34 @@ getUtentiOf(): Observable<User[]>{
 }
 
 
+  findById(idInput: number): Observable<User>{
+
+    return of(this.UTENTI.find(a => a.id == idInput)!);
+  }
+
+  eliminaUtenteService(idEliminare: number) {
+
+    let indiceLista = this.UTENTI.findIndex(a => a.id == idEliminare);
+    this.UTENTI.splice(indiceLista, 1);
+  }
+
+  edit(userUpdate:User):Observable<User[]>{
+    this.UTENTI.filter(a => a.id == userUpdate.id).map(a => { a.nome = userUpdate.nome; a.cognome = userUpdate.cognome; a.dataDiNascita = userUpdate.dataDiNascita; });
+    return of(this.UTENTI);
+  }
+
+  listaId:number[]=this.UTENTI.map(a=>a.id);
+
+  incrementoId():number{
+    return Math.max.apply(null,this.listaId)+1;
+
+  }
+
+  create(userInsert:User){
+    userInsert.id=this.incrementoId();
+    this.UTENTI.push(userInsert);
+    
+  }
+
   constructor() { }
 }

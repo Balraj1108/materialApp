@@ -8,6 +8,7 @@ import { MaterialModule } from './shared/material/material.module';
 import { ListUserComponent } from './components/list-user/list-user.component';
 import { DetailUserComponent } from './components/detail-user/detail-user.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
