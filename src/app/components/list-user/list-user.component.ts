@@ -1,9 +1,11 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Route, Router } from '@angular/router';
 import { User } from 'src/app/model/user';
 import { UserService } from 'src/app/services/user.service';
+import { SnackbarService } from 'src/app/shared/snackbar/snackbar.service';
 
 
 export interface PeriodicElement {
@@ -22,7 +24,7 @@ export interface PeriodicElement {
 })
 export class ListUserComponent implements OnInit {
 
-  constructor(private service: UserService, private route: Router){}
+  constructor(private service: UserService, private route: Router, public dialog: MatDialog, public serviceSnack: SnackbarService){}
   
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   
@@ -62,10 +64,11 @@ export class ListUserComponent implements OnInit {
   selectUtenteDaEliminare(id: number){
 
     this.service.eliminaUtenteService(id);
+    this.serviceSnack.openSnackbar("Utente Eliminato")
     this.getData();
     this.dataSource.paginator = this.paginator;
+    
   }
-
 
 
 }
