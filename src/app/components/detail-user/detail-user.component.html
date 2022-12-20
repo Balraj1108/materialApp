@@ -2,7 +2,7 @@
     <form >
     <mat-card>
     
-    <mat-form-field appearance="outline" >
+    <mat-form-field appearance="outline" *ngIf="visibilitaId()" >
         <mat-label >Id</mat-label>
         
         <input matInput type="number" placeholder="0" 
@@ -11,15 +11,15 @@
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Nome</mat-label>
-        <input matInput [value]="userItem.nome" [readonly]="isReadOnly()">
+        <input matInput name="nome" [(ngModel)]="userItem.nome" [readonly]="isReadOnly()">
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Cognome</mat-label>
-        <input matInput [value]="userItem.cognome" [readonly]="isReadOnly()">
+        <input matInput name="cognome" [(ngModel)]="userItem.cognome" [readonly]="isReadOnly()">
     </mat-form-field>
     <mat-form-field appearance="outline">
         <mat-label>Data Di Nascita</mat-label>
-        <input matInput [value]="userItem.dataDiNascita" [readonly]="isReadOnly()">
+        <input matInput name="dataDiNascita" [(ngModel)]="userItem.dataDiNascita" [readonly]="isReadOnly()">
     </mat-form-field>
     
     
@@ -27,6 +27,7 @@
     </mat-card>
     </form>  
     <button mat-raised-button color="primary" type="submit" (click)="insertUtente()" *ngIf="isReadOnlyBott()">Conferma</button>
+    <button mat-raised-button color="primary" type="submit" (click)="modificaUtente(userItem.id)" *ngIf="isReadOnlyBottMod()">Conferma Modifica</button>
     <button mat-raised-button color="secondary" [routerLink]="['/list']">Indietro</button>
 </div>
 

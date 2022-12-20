@@ -18,11 +18,15 @@ export class DetailUserComponent implements OnInit {
   userItem: User = {id: 0, nome: "", cognome: "", dataDiNascita: ""}
   
   ngOnInit(): void {
-
-    if(!(this.router.url.split("/")[1]==="create")){
+    //this.router.url.includes("create")
+    if(!(this.router.url.includes("create"))){
     let id: number = Number( this.route.snapshot.paramMap.get('id'));
     
-    this.service.findById(id)?.subscribe(user => this.userItem = user);
+    this.service.findById(id)?.subscribe(user => {
+      //this.userItem = {...user} problema= non va tanto in prodondità = soluzione => librerie lodash
+      this.userItem = Object.assign({},user);
+
+    });
     }
   }
 
@@ -37,7 +41,7 @@ export class DetailUserComponent implements OnInit {
   }
 
   isReadOnlyBott(){
-    if((this.router.url.split("/")[1]==="detail")){
+    if((this.router.url.split("/")[1]==="detail" || this.router.url.split("/")[1]==="edit")){
       return false; 
       }
       else{
@@ -52,6 +56,32 @@ export class DetailUserComponent implements OnInit {
     this.service.create(automobileDaInserire);
     this.router.navigate(["list"]);
     
+  }
+
+  visibilitaId(){
+    if((this.router.url.split("/")[1]==="detail")){
+    return true;
+    }
+    else{
+      return false;
+    }
+
+  }
+
+  modificaUtente(idDaPagina: number){
+    let automobileDaInserire: User={id: idDaPagina, nome:this.userItem.nome, cognome:this.userItem.cognome, dataDiNascita:this.userItem.dataDiNascita};
+    this.service.edit(automobileDaInserire);
+    this.router.navigate(["list"]);
+  }
+
+  isReadOnlyBottMod(){
+    if((this.router.url.split("/")[1]==="edit")){
+      return true; 
+      }
+      else{
+
+      return false;
+      }
   }
 
  
