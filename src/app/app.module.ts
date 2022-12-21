@@ -8,6 +8,9 @@ import { MaterialModule } from './shared/material/material.module';
 import { ListUserComponent } from './components/list-user/list-user.component';
 import { DetailUserComponent } from './components/detail-user/detail-user.component';
 import { SnackbarComponent } from './shared/snackbar/snackbar.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './core/auth/auth.interceptor';
 
 
 @NgModule({
@@ -15,15 +18,22 @@ import { SnackbarComponent } from './shared/snackbar/snackbar.component';
     AppComponent,
     ListUserComponent,
     DetailUserComponent,
-    SnackbarComponent
+    SnackbarComponent,
+    
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    MaterialModule
+    MaterialModule,
+    ReactiveFormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -2,8 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from 'src/app/model/user';
 import { UserService } from 'src/app/services/user.service';
-import { NgForm } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 
+
+export interface UserForm extends FormGroup<{
+  nome: FormControl<string>;
+  cognome: FormControl<string>;
+  id: FormControl<number>;
+  dataDiNascita: FormControl<string>;
+}>{}
 
 @Component({
   selector: 'app-detail-user',
@@ -12,10 +19,22 @@ import { NgForm } from '@angular/forms';
 })
 export class DetailUserComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute, private service: UserService,
-    private router: Router){}
+userReactive: UserForm = this.fb.group({
+  id: this.fb.nonNullable.control(0),
+  nome: this.fb.nonNullable.control("",[Validators.required, Validators.minLength(4)]),
+  cognome: this.fb.nonNullable.control("",[Validators.required, Validators.minLength(4)]),
+  dataDiNascita: this.fb.nonNullable.control("",[Validators.required])
+});
 
-  userItem: User = {id: 0, nome: "", cognome: "", dataDiNascita: ""}
+
+
+
+
+
+  constructor(private route: ActivatedRoute, private service: UserService,
+    private router: Router, private fb: FormBuilder){}
+
+    userForm: User = {id: 0, nome: "", cognome: "", dataDiNascita: ""}
   
   ngOnInit(): void {
     //this.router.url.includes("create")
@@ -24,10 +43,15 @@ export class DetailUserComponent implements OnInit {
     
     this.service.findById(id)?.subscribe(user => {
       //this.userItem = {...user} problema= non va tanto in prodondità = soluzione => librerie lodash
-      this.userItem = Object.assign({},user);
+      //this.userItem = Object.assign({},user);
+      this.userReactive.patchValue(user);
 
     });
     }
+    if((this.router.url.includes("detail"))){
+      this.userReactive.disable();
+    }
+
   }
 
   isReadOnly() {
@@ -52,7 +76,7 @@ export class DetailUserComponent implements OnInit {
 
   insertUtente(){
     let id:number = this.service.incrementoId();
-    let automobileDaInserire: User={id, nome:this.userItem.nome, cognome:this.userItem.cognome, dataDiNascita:this.userItem.dataDiNascita};
+    let automobileDaInserire: User={...this.userReactive.getRawValue(), id};
     this.service.create(automobileDaInserire);
     this.router.navigate(["list"]);
     
@@ -68,8 +92,8 @@ export class DetailUserComponent implements OnInit {
 
   }
 
-  modificaUtente(idDaPagina: number){
-    let automobileDaInserire: User={id: idDaPagina, nome:this.userItem.nome, cognome:this.userItem.cognome, dataDiNascita:this.userItem.dataDiNascita};
+  modificaUtente(idDaModificare: number){
+    let automobileDaInserire: User={...this.userReactive.getRawValue(), id: idDaModificare};
     this.service.edit(automobileDaInserire);
     this.router.navigate(["list"]);
   }
@@ -83,6 +107,8 @@ export class DetailUserComponent implements OnInit {
       return false;
       }
   }
+
+
 
  
 

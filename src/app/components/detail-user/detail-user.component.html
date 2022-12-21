@@ -1,25 +1,45 @@
 <div style="padding: 80px" class="card-form" >
-    <form >
+    <form  [formGroup]="userReactive" >
     <mat-card>
     
     <mat-form-field appearance="outline" *ngIf="visibilitaId()" >
         <mat-label >Id</mat-label>
         
-        <input matInput type="number" placeholder="0" 
-        [value]="userItem.id" [readonly]="isReadOnly()">
+        <input matInput type="number"
+         placeholder="0" 
+        formControlName="id"
+        >
         
     </mat-form-field>
+
     <mat-form-field appearance="outline">
         <mat-label>Nome</mat-label>
-        <input matInput name="nome" [(ngModel)]="userItem.nome" [readonly]="isReadOnly()">
+        <input 
+        matInput name="nome" 
+        type="text"
+        formControlName="nome"
+
+        
+        >
+        <mat-error *ngIf="userReactive.get('nome')?.hasError('required')">Nome obbligatorio</mat-error>
+        <mat-error *ngIf="userReactive.get('nome')?.hasError('minlength')">Minimo 4 caratteri</mat-error>
     </mat-form-field>
+
     <mat-form-field appearance="outline">
         <mat-label>Cognome</mat-label>
-        <input matInput name="cognome" [(ngModel)]="userItem.cognome" [readonly]="isReadOnly()">
+        <input 
+        matInput name="cognome" 
+        formControlName="cognome"
+         >
+         <mat-error *ngIf="userReactive.get('cognome')?.hasError('required')">Cognome obbligatorio</mat-error>
+        <mat-error *ngIf="userReactive.get('cognome')?.hasError('minlength')">Minimo 4 caratteri</mat-error>
     </mat-form-field>
+
     <mat-form-field appearance="outline">
         <mat-label>Data Di Nascita</mat-label>
-        <input matInput name="dataDiNascita" [(ngModel)]="userItem.dataDiNascita" [readonly]="isReadOnly()">
+        <input matInput name="dataDiNascita" 
+        formControlName="dataDiNascita"
+        >
     </mat-form-field>
     
     
@@ -27,7 +47,7 @@
     </mat-card>
     </form>  
     <button mat-raised-button color="primary" type="submit" (click)="insertUtente()" *ngIf="isReadOnlyBott()">Conferma</button>
-    <button mat-raised-button color="primary" type="submit" (click)="modificaUtente(userItem.id)" *ngIf="isReadOnlyBottMod()">Conferma Modifica</button>
+    <button mat-raised-button color="primary" type="submit" (click)="modificaUtente(0)" *ngIf="isReadOnlyBottMod()">Conferma Modifica</button>
     <button mat-raised-button color="secondary" [routerLink]="['/list']">Indietro</button>
 </div>
 

@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DetailUserComponent } from './components/detail-user/detail-user.component';
 import { ListUserComponent } from './components/list-user/list-user.component';
+import { AuthModule } from './core/auth/auth.module';
+import { LoginComponent } from './core/auth/login/login.component';
 
 const routes: Routes = [
   {
@@ -19,6 +21,10 @@ const routes: Routes = [
   {
     path: "edit/:id",
     component: DetailUserComponent
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./core/auth/auth.module').then(m => m.AuthModule),
   },
   {
     path: "",

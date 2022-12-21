@@ -43,10 +43,10 @@ getUtentiOf(): Observable<User[]>{
     return of(this.UTENTI);
   }
 
-  listaId:number[]=this.UTENTI.map(a=>a.id);
+  listaId:number[]=this.UTENTI.map(a=>a.id!);
 
   incrementoId():number{
-    return Math.max.apply(null,this.listaId)+1;
+    return Math.max.apply(null,this.listaId!)+1;
 
   }
 
