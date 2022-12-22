@@ -1,6 +1,43 @@
-<!-- Begin page content -->
+<div style="padding: 80px" class="card-form" >
+    <div style="width: 30%; margin: auto; text-align: center;" >
+    <form  [formGroup]="userReactive" >
+    <mat-card>
+
+    <mat-form-field appearance="outline">
+        <mat-label>username</mat-label>
+        <input 
+        matInput name="username" 
+        formControlName="username"
+         >
+         <mat-error *ngIf="userReactive.get('username')?.hasError('required')">username obbligatorio</mat-error>
+        <mat-error *ngIf="userReactive.get('username')?.hasError('minlength')">Minimo 4 caratteri</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>password</mat-label>
+        <input 
+        type="password"
+        matInput name="password" 
+        formControlName="password"
+         >
+         <mat-error *ngIf="userReactive.get('password')?.hasError('required')">password obbligatorio</mat-error>
+        <mat-error *ngIf="userReactive.get('password')?.hasError('minlength')">Minimo 4 caratteri</mat-error>
+    </mat-form-field>
+    
+    <button mat-raised-button color="primary" type="submit" (click)="save()">Login</button>
+    <button mat-raised-button color="secondary" [routerLink]="['/list']">Indietro</button>
+    
+    </mat-card>
+    </form>  
+</div>
+</div>
+
+  
+
+
+<!-- Begin page content
 <main class="flex-shrink-0">
-    <div class="container">
+    <div class="container"> -->
 
 
         <!--<div class="alert alert-danger alert-dismissible fade show" role="alert" *ngIf="errorMessage">
@@ -8,7 +45,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>-->
 
-        <div class='card' *ngIf="utente">
+        <!-- <div class='card' *ngIf="utente">
             <div class='card-header'>
                 <h5>Login</h5>
             </div>
@@ -30,9 +67,9 @@
                                 Il campo deve avere almeno due caratteri.
                             </span>
                         </span>
-                    </div>
+                    </div> -->
 <!--pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{6,}"-->
-                    <div class="col-md-6">
+                    <!-- <div class="col-md-6">
                         <label>Password<span class="text-danger">*</span></label>
                         <input type="password" class="form-control" placeholder="Inserire la password" 
                         required  minlength="4"
@@ -64,15 +101,15 @@
                     </div>
 
 
-                </form>
+                </form> -->
 
 
-                <!-- end card-body -->
-            </div>
-            <!-- end card -->
+                
+            <!-- </div>
+            
         </div>
-        <!-- end container -->
+        
     </div>
 
-    <!-- end main -->
-</main>
+    
+</main> -->

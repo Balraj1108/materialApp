@@ -11,6 +11,10 @@ import { FormsModule } from '@angular/forms';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import {MatSelectModule} from '@angular/material/select';
+import { MatNativeDateModule, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { CUSTOM_DATE_FORMAT } from '../customDateFormatter';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatMomentDateModule, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 
 @NgModule({
   declarations: [],
@@ -26,7 +30,10 @@ import {MatSelectModule} from '@angular/material/select';
     FormsModule,
     MatDialogModule,
     MatSnackBarModule,
-    MatSelectModule
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatMomentDateModule,
     
   ],
   exports:[
@@ -40,7 +47,15 @@ import {MatSelectModule} from '@angular/material/select';
     FormsModule,
     MatDialogModule,
     MatSnackBarModule,
-    MatSelectModule
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatMomentDateModule,
+  ],
+  providers:[
+  { provide: MAT_DATE_LOCALE, useValue: 'it-IT' },
+    { provide: MAT_DATE_FORMATS, useValue: CUSTOM_DATE_FORMAT },
+    { provide: MAT_MOMENT_DATE_ADAPTER_OPTIONS, useValue: { useUtc: true } },
   ]
 })
 export class MaterialModule { }

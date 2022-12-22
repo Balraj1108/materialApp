@@ -2,13 +2,14 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DetailUserComponent } from './components/detail-user/detail-user.component';
 import { ListUserComponent } from './components/list-user/list-user.component';
-import { AuthModule } from './core/auth/auth.module';
+import { AuthGuard } from './core/auth/auth.guard';
 import { LoginComponent } from './core/auth/login/login.component';
 
 const routes: Routes = [
   {
     path: "list",
-    component: ListUserComponent
+    component: ListUserComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: "create",
@@ -23,8 +24,8 @@ const routes: Routes = [
     component: DetailUserComponent
   },
   {
-    path: 'login',
-    loadChildren: () => import('./core/auth/auth.module').then(m => m.AuthModule),
+    path: "login",
+    component: LoginComponent
   },
   {
     path: "",

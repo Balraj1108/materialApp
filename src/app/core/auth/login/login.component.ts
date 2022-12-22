@@ -1,9 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { User } from 'src/app/model/user';
+import { UserService } from 'src/app/services/user.service';
 import { AuthService } from '../auth.service';
+
+export interface LoginForm extends FormGroup<{
+  username: FormControl<string>;
+  password: FormControl<string>;
+}>{}
 
 @Component({
   selector: 'app-login',
@@ -12,7 +18,15 @@ import { AuthService } from '../auth.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private authService: AuthService, private route: Router) { }
+  constructor(private authService: AuthService, private router: Router,
+    private route: ActivatedRoute, private service: UserService,
+     private fb: FormBuilder) { }
+
+
+     userReactive: LoginForm = this.fb.group({
+      username: this.fb.nonNullable.control("",[Validators.required, Validators.minLength(4)]),
+      password: this.fb.nonNullable.control("",[Validators.required, Validators.minLength(4)]),
+    });
 
   utente: User = {username: "", password: "", token: ""};
   destroy$: Subject<boolean> = new Subject();
@@ -25,14 +39,14 @@ export class LoginComponent implements OnInit {
     this.destroy$.complete();
   }
 
-  save(loginForm: NgForm): void{
-    this.authService.login(loginForm.value)
+  save(): void{
+    this.authService.login(this.userReactive.getRawValue())
     .pipe(takeUntil(this.destroy$))
     .subscribe(res =>
 
       {
         this.authService.setUserLogged(res);
-        this.route.navigate(["list"])})
+        this.router.navigate(["list"])})
   }
 
 }

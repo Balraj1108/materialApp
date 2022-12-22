@@ -11,6 +11,8 @@ import { SnackbarComponent } from './shared/snackbar/snackbar.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './core/auth/auth.interceptor';
+import { LoginComponent } from './core/auth/login/login.component';
+import { DatePipe } from '@angular/common';
 
 
 @NgModule({
@@ -19,6 +21,7 @@ import { AuthInterceptor } from './core/auth/auth.interceptor';
     ListUserComponent,
     DetailUserComponent,
     SnackbarComponent,
+    LoginComponent
     
   ],
   imports: [
@@ -32,7 +35,8 @@ import { AuthInterceptor } from './core/auth/auth.interceptor';
   providers: [
     {
       provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true
-    }
+    },
+    DatePipe
   ],
   bootstrap: [AppComponent]
 })

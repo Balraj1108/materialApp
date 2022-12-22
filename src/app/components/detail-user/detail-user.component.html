@@ -1,13 +1,12 @@
 <div style="padding: 80px" class="card-form" >
+    <div style="width: 30%; margin: auto; text-align: center;" >
     <form  [formGroup]="userReactive" >
     <mat-card>
     
     <mat-form-field appearance="outline" *ngIf="visibilitaId()" >
         <mat-label >Id</mat-label>
         
-        <input matInput type="number"
-         placeholder="0" 
-        formControlName="id"
+        <input matInput type="number" [value]="idUser"
         >
         
     </mat-form-field>
@@ -36,19 +35,57 @@
     </mat-form-field>
 
     <mat-form-field appearance="outline">
+        <mat-label>username</mat-label>
+        <input 
+        matInput name="username" 
+        formControlName="username"
+         >
+         <mat-error *ngIf="userReactive.get('username')?.hasError('required')">username obbligatorio</mat-error>
+        <mat-error *ngIf="userReactive.get('username')?.hasError('minlength')">Minimo 4 caratteri</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+        <mat-label>password</mat-label>
+        <input 
+        type="password"
+        matInput name="password" 
+        formControlName="password"
+         >
+         <mat-error *ngIf="userReactive.get('password')?.hasError('required')">password obbligatorio</mat-error>
+        <mat-error *ngIf="userReactive.get('password')?.hasError('minlength')">Minimo 4 caratteri</mat-error>
+    </mat-form-field>
+    
+
+    
+
+    <mat-form-field appearance="outline">
+        
         <mat-label>Data Di Nascita</mat-label>
-        <input matInput name="dataDiNascita" 
+        <input matInput 
+        name="dataDiNascita"
         formControlName="dataDiNascita"
-        >
+         [matDatepicker]="picker"
+         >
+        <mat-hint>DD/MM/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+        <mat-label>Select</mat-label>
+        <mat-select>
+          <mat-option value="one">First option</mat-option>
+          <mat-option value="two">Second option</mat-option>
+        </mat-select>
     </mat-form-field>
     
     
-    
+    <button mat-raised-button color="primary" type="submit" (click)="insertUtente()" *ngIf="isReadOnlyBott()">Conferma</button>
+    <button mat-raised-button color="primary" type="submit" (click)="modificaUtente()" *ngIf="isReadOnlyBottMod()">Conferma Modifica</button>
+    <button mat-raised-button color="secondary" [routerLink]="['/list']">Indietro</button>
     </mat-card>
     </form>  
-    <button mat-raised-button color="primary" type="submit" (click)="insertUtente()" *ngIf="isReadOnlyBott()">Conferma</button>
-    <button mat-raised-button color="primary" type="submit" (click)="modificaUtente(0)" *ngIf="isReadOnlyBottMod()">Conferma Modifica</button>
-    <button mat-raised-button color="secondary" [routerLink]="['/list']">Indietro</button>
+</div>
+    
 </div>
 
   

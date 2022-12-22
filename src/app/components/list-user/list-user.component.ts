@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { DateAdapter } from '@angular/material/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -24,11 +25,15 @@ export interface PeriodicElement {
 })
 export class ListUserComponent implements OnInit {
 
-  constructor(private service: UserService, private route: Router, public dialog: MatDialog, public serviceSnack: SnackbarService){}
+  constructor(private service: UserService, private route: Router, public dialog: MatDialog, public serviceSnack: SnackbarService,
+    private dateAdapter: DateAdapter<Date>){
+      this.dateAdapter.setLocale("IT")
+    }
   
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   
-
+  dataSource: MatTableDataSource<User> = new MatTableDataSource<User>();
+  displayedColumns: string[] = ['id', 'nome', 'cognome', 'dataDiNascita',"azioni"];
 
   ngAfterViewInit(){
     this.dataSource.paginator = this.paginator;
@@ -36,15 +41,15 @@ export class ListUserComponent implements OnInit {
 
 
   ngOnInit(): void {
+    
     this.getData();
   }
 
-  dataSource!: MatTableDataSource<User>;
-  displayedColumns: string[] = ['id', 'nome', 'cognome', 'dataDiNascita',"azioni"];
+  
 
   getData(){
     this.service.getUtentiOf().subscribe(res =>{
-      this.dataSource = new MatTableDataSource<User>(res);
+      this.dataSource.data = res;
     })
   }
 
@@ -61,9 +66,12 @@ export class ListUserComponent implements OnInit {
     this.route.navigate(["create"]);
   }
 
+  varBoolean: boolean = true;
+
   selectUtenteDaEliminare(id: number){
 
-    this.service.eliminaUtenteService(id);
+    this.service.eliminaUtente(id).subscribe({next: res => this.varBoolean = res,
+      complete: () => this.route.navigate(["list"])});
     this.serviceSnack.openSnackbar("Utente Eliminato")
     this.getData();
     this.dataSource.paginator = this.paginator;
